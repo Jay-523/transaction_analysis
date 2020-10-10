@@ -17,10 +17,10 @@ def get_kpi():
     content = request.get_json(silent= True)
     
     content = json.loads(content)
-    data = content['data']
+    data = request.form.get('data')
     
-    print(type(content))
-    key = content['api_key']
+    
+    key = request.form['api_key']
     
     if(key != 'iorusjkldfh#7lkhfa#adf88ayhwgfhhdfhthweasdfasjytk'):
         return {'login': 'could not verify'}
