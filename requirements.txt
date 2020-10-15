@@ -33,3 +33,4 @@ zipp==3.1.0
 datetime
 itsdangerous==1.1.0
 MarkupSafe==1.1.1
+flask_cors
