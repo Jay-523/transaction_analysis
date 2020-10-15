@@ -2,9 +2,9 @@ from flask import Flask, request
 import json
 import pandas as pd  
 from KPIs import get_basic_kpis
-
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 @app.route('/')
 def hello():
     return "<h1>FlatFolder KPI</h1>"
