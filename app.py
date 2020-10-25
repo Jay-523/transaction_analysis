@@ -26,9 +26,22 @@ def get_kpi():
     if(key != 'iorusjkldfh#7lkhfa#adf88ayhwgfhhdfhthweasdfasjytk'):
         return {'login': 'could not verify'}
     d = pd.DataFrame(data[1])
-    savings,inc_grad, s_grad, rs_grad,inc_median, s_median, rs_median, p, df = get_basic_kpis(d)
-    return {"income_gradient": inc_grad, "savings_gradient": s_grad, "cumulative_savings_gradient": s_grad, "median_income": inc_median, "median_savings": s_median, "cumulative_savings_median": rs_median, "peristance": p}
+    savings,inc_grad, s_grad, rs_grad,inc_median, s_median, rs_median, p, df, tm = get_basic_kpis(d, convert_date= True)
+
+    rent_verified = verify_expense([rent], [12], d, tm)[0]
+
     
+    total_month_missed = ((tm - m[m.amount == rent]['count']).values)
+    if(len(total_month_missed) == 0):
+        total_month_missed = 'N.A.'
+    else:
+        total_month_missed = total_month_missed[0]
+    
+    a, a_year, b, b_year = get_rental_month_duration(d, rent)
+    return {"income_gradient": inc_grad, "savings_gradient": s_grad, "cumulative_savings_gradient": s_grad, "median_income": inc_median, "median_savings": s_median, "cumulative_savings_median": rs_median, "peristance": p, "rent_verified": rent_verified,
+            "start_month": a, "start_year": a_year, "end_month": b, "end_year": b_year, "total_month_missed": total_month_missed}
+ 
+
   
 
 if __name__ == "__main__":
