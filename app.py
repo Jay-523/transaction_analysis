@@ -27,10 +27,11 @@ def get_kpi():
         return {'login': 'could not verify'}
     d = pd.DataFrame(data[1])
     savings,inc_grad, s_grad, rs_grad,inc_median, s_median, rs_median, p, df, tm = get_basic_kpis(d, convert_date= True)
-    try:
-        rent_verified = verify_expense([rent], [12], d, tm)[0]
-    except:
-        rent_verified = 'can_not_verify'
+    rent_verified = 'can_not_verify'
+    if(rent != ''):
+        rent_verified = verify_expense([int(rent)], [12], d, tm)[0]
+
+
 
     
     total_month_missed = ((tm - m[m.amount == rent]['count']).values)
