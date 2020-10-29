@@ -30,12 +30,13 @@ def get_kpi():
     d = pd.DataFrame(data[1])
     savings,inc_grad, s_grad, rs_grad,inc_median, s_median, rs_median, p, df, tm = get_basic_kpis(d, convert_date= True)
     rent_verified = 'can_not_verify'
+    rent = data[0]['qa4']['current_rent_amount']
     if(rent != ''):
         rent_verified = verify_expense([int(rent)], [12], d, tm)[0]
 
 
 
-    
+    m = get_expenses_dataframe(d)
     total_month_missed = ((tm - m[m.amount == rent]['count']).values)
     if(len(total_month_missed) == 0):
         total_month_missed = 'N.A.'
@@ -51,4 +52,3 @@ def get_kpi():
 
 if __name__ == "__main__":
     app.run()
-
