@@ -2,6 +2,7 @@ from flask import Flask, request
 import json
 import pandas as pd  
 from KPIs import get_basic_kpis
+from clustering import *
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +18,7 @@ def get_kpi():
     content = request.get_json(silent= True)
     return content
     
-    #content = json.loads(content)
+    content = json.loads(content)
     data = content['data']
     
     
