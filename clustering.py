@@ -132,8 +132,8 @@ def get_recurrent_expenses(m, tm):
         
 
 def get_rental_month_duration(d, rent):
-    a = d[d.amount == -1*rent].month_number.min()
-    b = d[d.amount == -1*rent].month_number.max()
+    a = d[(d.amount < (-1*rent +20)) & (d.amount > (-1*rent -20))].month_number.min()
+    b = d[(d.amount < (-1*rent +20)) & (d.amount > (-1*rent -20))].month_number.max()
     if (a <=12):
         a_year = 2019
     else:
