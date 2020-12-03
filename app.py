@@ -44,6 +44,8 @@ def get_kpi():
         total_month_missed = total_month_missed[0]
     
     a, a_year, b, b_year = get_rental_month_duration(d, rent)
+    a = int(d[d.month_number == a].head(1).month.values)
+    b = int(df[df.month_number == b].head(1).month.values)
     return {"income_gradient": str(inc_grad), "savings_gradient": str(s_grad), "cumulative_savings_gradient": str(s_grad), "median_income": str(inc_median), "median_savings": str(s_median), "cumulative_savings_median": str(rs_median), "peristance": str(p), "rent_verified": str(rent_verified),
             "start_month": str(a), "start_year": str(a_year), "end_month": str(b), "end_year": str(b_year), "total_month_missed": str(total_month_missed)}
  
