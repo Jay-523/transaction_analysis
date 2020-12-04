@@ -24,6 +24,7 @@ def get_kpi():
     
     
     key = content['api_key']
+    return content
     
     if(key != 'iorusjkldfh#7lkhfa#adf88ayhwgfhhdfhthweasdfasjytk'):
         return {'login': 'could not verify'}
@@ -43,7 +44,7 @@ def get_kpi():
     else:
         total_month_missed = total_month_missed[0]
 
-    return d.json()
+
     a, a_year, b, b_year = get_rental_month_duration(d, rent)
     a = str(d[d.month_number == a].head(1).month.values)
     b = str(df[df.month_number == b].head(1).month.values)
