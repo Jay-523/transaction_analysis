@@ -144,7 +144,3 @@ def get_rental_month_duration(d, rent):
         b_year = 2020
     
     return (a, a_year, b, b_year)
-
-
-
-
