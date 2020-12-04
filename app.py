@@ -42,7 +42,8 @@ def get_kpi():
         total_month_missed = 'N.A.'
     else:
         total_month_missed = total_month_missed[0]
-    
+
+
     a, a_year, b, b_year = get_rental_month_duration(d, rent)
     a = str(d[d.month_number == a].head(1).month.values)
     b = str(df[df.month_number == b].head(1).month.values)
