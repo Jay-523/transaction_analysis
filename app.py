@@ -24,7 +24,7 @@ def get_kpi():
     
     
     key = content['api_key']
-    return json.dumps(content)
+    return "test return"
     
     if(key != 'iorusjkldfh#7lkhfa#adf88ayhwgfhhdfhthweasdfasjytk'):
         return {'login': 'could not verify'}
