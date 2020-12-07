@@ -12,11 +12,10 @@ def hello():
 
 
 @app.route('/api/getkpi', methods = ['GET', 'POST'])
-
 def get_kpi():
-    
-    content = request.get_json(silent= True)
     return "test return"
+    content = request.get_json(silent= True)
+    
     
     #content = json.loads(content)
     data = content['data']
