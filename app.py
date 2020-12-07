@@ -13,9 +13,9 @@ def hello():
 
 @app.route('/api/getkpi', methods = ['GET', 'POST'])
 def get_kpi():
-    return "test return"
-    content = request.get_json(silent= True)
     
+    content = request.get_json(silent= True)
+    return "test return"
     
     #content = json.loads(content)
     data = content['data']
