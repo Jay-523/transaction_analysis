@@ -50,5 +50,5 @@ def get_kpi():
     return {"income_gradient": str(inc_grad), "savings_gradient": str(s_grad), "cumulative_savings_gradient": str(s_grad), "median_income": str(inc_median), "median_savings": str(s_median), "cumulative_savings_median": str(rs_median), "peristance": str(p), "rent_verified": str(rent_verified),
             "start_month": str(a), "start_year": str(a_year), "end_month": str(b), "end_year": str(b_year), "total_month_missed": str(total_month_missed)}
  
-
-app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
