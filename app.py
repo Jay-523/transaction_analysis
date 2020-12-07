@@ -15,7 +15,7 @@ def hello():
 def get_kpi():
     
     content = request.get_json(silent= True)
-    return "test return"
+    return content
     
     #content = json.loads(content)
     data = content['data']
