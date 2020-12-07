@@ -52,7 +52,4 @@ def get_kpi():
             "start_month": str(a), "start_year": str(a_year), "end_month": str(b), "end_year": str(b_year), "total_month_missed": str(total_month_missed)}
  
 
-  
-
-if __name__ == "__main__":
-    app.run()
+app.run()
