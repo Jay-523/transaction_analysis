@@ -3,7 +3,10 @@ import json
 import pandas as pd  
 from KPIs import get_basic_kpis
 from clustering import *
+from flask_cors import CORS
 
+app = Flask(_name_)
+CORS(app)
 app = Flask(__name__)
 
 @app.route('/')
