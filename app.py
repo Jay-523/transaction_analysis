@@ -5,7 +5,7 @@ from KPIs import get_basic_kpis
 from clustering import *
 from flask_cors import CORS
 
-app = Flask(_name_)
+app = Flask(__name__)
 CORS(app)
 
 
