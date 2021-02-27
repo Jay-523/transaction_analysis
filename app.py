@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-
+asdf
 
 @app.route('/')
 def hello():
@@ -16,7 +16,7 @@ def hello():
 
 @app.route('/api/getkpi', methods = ['GET', 'POST'])
 def get_kpi():
-    
+  asdf  
     content = request.get_json(silent= True)
     #return content
     
