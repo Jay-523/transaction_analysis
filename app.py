@@ -1,57 +1,61 @@
-from flask import Flask, request
-import json
-import pandas as pd  
-from KPIs import get_basic_kpis
-from clustering import *
-from flask_cors import CORS
-
+from flask import Flask, redirect, url_for, render_template,request
+from chancealgo import run_rounds_api, generate_sample, weekly_combat_1
 app = Flask(__name__)
-CORS(app)
-asdf
+@app.route("/weekly", methods = ['GET', 'POST'])
+def home2():
+    if request.method == "POST":
+        data = request.form.copy()
 
-@app.route('/')
-def hello():
-    return "<h1>FlatFolder KPI</h1>"
+        for i in data.keys():
+            data[i] = float(data[i])
+        n_plr = data["n_plr"]
+        fpm = data["fpm"]
+        spm = data["spm"]
+        tpm = data["tpm"]
+        initial_chip_count = data["initial_chip_count"]
 
-
-@app.route('/api/getkpi', methods = ['GET', 'POST'])
-def get_kpi():
-  asdf  
-    content = request.get_json(silent= True)
-    #return content
-    
-    #content = json.loads(content)
-    data = content['data']
-    
-    
-    
-    key = content['api_key']
-
-    
-    if(key != 'iorusjkldfh#7lkhfa#adf88ayhwgfhhdfhthweasdfasjytk'):
-        return {'login': 'could not verify'}
-    d = pd.DataFrame(data[1])
-    savings,inc_grad, s_grad, rs_grad,inc_median, s_median, rs_median, p, df, tm = get_basic_kpis(d, convert_date= True)
-    rent_verified = 'can_not_verify'
-    rent = data[0]['qa4']['current_rent_amount']
-    if(rent != ''):
-        rent_verified = verify_expense([int(rent)], [12], d, tm)[0]
-
-
-
-    m = get_expenses_dataframe(d)
-    total_month_missed = ((tm - m[m.amount == rent]['count']).values)
-    if(len(total_month_missed) == 0):
-        total_month_missed = 'N.A.'
+        result = weekly_combat_1(n_plr, fpm, spm, tpm, initial_chip_count)
+        cssadd=" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css' rel='stylesheet' >"
+        return str(
+           cssadd+ "<div class='px-2'><h1 class='text-primary mt-2'>Final updated values  :</h1> <p class='px-2'>" 
+             +  str(result['plr_new']) +"</p><h4 class='text-primary mt-2 '>First prize winners: </h4><p class='px-2'>" + str(result['fpwr'])+ "</p><h4 class='text-primary mt-2' >Second prize winners: </h4><p class='px-2'>" + str(result['spwr']) + "</p><h4 class='text-primary mt-2'>Third prize winnners:</h4><p class='px-2'>" + str(result['tpwr']) +"</p></div>"
+             
+        )   
+      
     else:
-        total_month_missed = total_month_missed[0]
+        return render_template("index2.html")
+    return render_template('index2.html')
+
+@app.route("/", methods = ['GET', 'POST'])
+def home():
+    if request.method == "POST":
+        data = request.form.copy()
+
+        for i in data.keys():
+            data[i] = int(data[i])
+        
+
+        n_rounds = data['n_rounds']
+        n_plr = data['n_plr']
+        plr_added_r = data['plr_added_r']
+        plr_added_s = data['plr_added_s']
+        num_spins = data['num_spins']
+        rt = data['rt']
+        chance = data['chance']
+        stake = data['stake']
+        freebie = data['freebie']
+       
+        w, f = run_rounds_api( n_rounds,n_plr,plr_added_r,    plr_added_s,    num_spins,rt,    chance,    stake,    freebie)
+        cssadd=" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css' rel='stylesheet' >"
+        return str(
+           cssadd+ "<div class='px-2'><h1 class='text-primary mt-2'>These are the final chip stakes</h1> <p class='text-dark px-3'>" 
+             + str(f) + "</p></div>"
+             
+        )   
+    else:
+        return render_template("index.html")
+    return render_template('index.html')
 
 
-    a, a_year, b, b_year = get_rental_month_duration(d, rent)
-    a = str(d[d.month_number == a].head(1).month.values)
-    b = str(df[df.month_number == b].head(1).month.values)
-    return {"income_gradient": str(inc_grad), "savings_gradient": str(s_grad), "cumulative_savings_gradient": str(s_grad), "median_income": str(inc_median), "median_savings": str(s_median), "cumulative_savings_median": str(rs_median), "peristance": str(p), "rent_verified": str(rent_verified),
-            "start_month": str(a), "start_year": str(a_year), "end_month": str(b), "end_year": str(b_year), "total_month_missed": str(total_month_missed)}
- 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug = True)

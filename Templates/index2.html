@@ -1,0 +1,151 @@
+<html>
+<head>
+<title>Spin Project</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" >
+<style>
+  .formcontainer{
+    border:1px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:2px 2px 16px 0px rgba(0,0,0,0.5);
+  }
+
+  .formcontainer input{
+    border-radius: 5px;
+    border:none;
+    padding:5px 10px;
+  }
+
+  .slidervaluebox{
+    width:35px;margin-top: -25px;margin-left: 160px;
+  }
+
+</style>
+</head>
+<body>
+  <div>
+    <!-- Header started -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Spin Project Protoype</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+          
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Hader ended -->
+    <!-- Body started -->
+  <div class="container py-5 my-5 ">
+    <form action = "#" method = "post" class="formcontainer">
+    <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th >Parameters</th>
+          <th >Values</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>n_plr: number of players for the simulation</th>
+          <td><input type="number" id='text1'></div></td>
+         
+        </tr>
+        <tr>
+          <th> fpm: first prize multiplier (example: 4.5)</th>
+          <!-- <td><input type = "number" name = "fpm" /></td> -->
+          <td><input type="range" min="1" max="100" value="0" step="0.1"  id="input2"  name = "fpm" /><div class="slidervaluebox" id='text2'>0</div></td>
+
+         
+        </tr>
+        <tr>
+          <th>spm: second prize multiplier (example: 3.5)</th>
+          <!-- <td ><input type = "number" name = "spm" /></td> -->
+          <td><input type="range" min="1" max="100" value="0" step="0.1" id="input3"  name = "spm" /><div class="slidervaluebox" id='text3'>0</div></td>
+         
+        </tr>
+        <tr>
+          <th >tpm: third prize multiplier (example: 2.5) </th>
+          <!-- <td><input type = "number" name = "tpm" /></td> -->
+          <td><input type="range" min="1" max="100" value="0" step="0.1" id="input4"  name = "tpm" /><div class="slidervaluebox" id='text4'>0</div></td>
+         
+        </tr>
+        <tr>
+          <th>initial chip count</th>
+          <!-- <td ><input type = "number" name = "initial_chip_count" /></td> -->
+          <td><input type="range" min="1" max="100" value="0" step="0.1" id="input5"  name = "initial_chip_count" /><div class="slidervaluebox" id='text5'>0</div></td>
+         
+        </tr>
+        
+        <tr>
+          <th ></th>
+          <td ><input type = "submit" value = "Run Simulator" class="btn btn-sm btn-primary"></td>
+         
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  </div>
+    <!-- Body ended -->
+  
+    <!-- Footer Started -->
+    <footer class=" text-center text-lg-start navbar-light" >
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: #e3f2fd;">
+        © 2020 Copyright
+        
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- footer ended -->
+  </div>
+  
+
+
+<script>
+   document.getElementById('input1').addEventListener('input', function () {
+        document.getElementById('text1').innerHTML = document.getElementById('input1').value;
+      }, false);
+
+      document.getElementById('input2').addEventListener('input', function () {
+        document.getElementById('text2').innerHTML = document.getElementById('input2').value;
+      }, false);
+
+      document.getElementById('input3').addEventListener('input', function () {
+        document.getElementById('text3').innerHTML = document.getElementById('input3').value;
+      }, false);
+
+      document.getElementById('input4').addEventListener('input', function () {
+        document.getElementById('text4').innerHTML = document.getElementById('input4').value;
+      }, false);
+
+      document.getElementById('input5').addEventListener('input', function () {
+        document.getElementById('text5').innerHTML = document.getElementById('input5').value;
+      }, false);
+
+  
+      
+
+     
+
+     
+
+   
+
+
+</script>
+</body>
+</html>
