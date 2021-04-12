@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template,request
 from chancealgo import run_rounds_api, generate_sample, weekly_combat_1
-app = Flask(__name__)
+appp = Flask(__name__)
 @app.route("/weekly", methods = ['GET', 'POST'])
 def home2():
     if request.method == "POST":
