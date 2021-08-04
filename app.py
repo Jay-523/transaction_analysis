@@ -1,61 +1,57 @@
-from flask import Flask, redirect, url_for, render_template,request
-from chancealgo import run_rounds_api, generate_sample, weekly_combat_1
-appp = Flask(__name__)
-@app.route("/weekly", methods = ['GET', 'POST'])
-def home2():
-    if request.method == "POST":
-        data = request.form.copy()
-
-        for i in data.keys():
-            data[i] = float(data[i])
-        n_plr = data["n_plr"]
-        fpm = data["fpm"]
-        spm = data["spm"]
-        tpm = data["tpm"]
-        initial_chip_count = data["initial_chip_count"]
-
-        result = weekly_combat_1(n_plr, fpm, spm, tpm, initial_chip_count)
-        cssadd=" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css' rel='stylesheet' >"
-        return str(
-           cssadd+ "<div class='px-2'><h1 class='text-primary mt-2'>Final updated values  :</h1> <p class='px-2'>" 
-             +  str(result['plr_new']) +"</p><h4 class='text-primary mt-2 '>First prize winners: </h4><p class='px-2'>" + str(result['fpwr'])+ "</p><h4 class='text-primary mt-2' >Second prize winners: </h4><p class='px-2'>" + str(result['spwr']) + "</p><h4 class='text-primary mt-2'>Third prize winnners:</h4><p class='px-2'>" + str(result['tpwr']) +"</p></div>"
-             
-        )   
-      
-    else:
-        return render_template("index2.html")
-    return render_template('index2.html')
-
-@app.route("/", methods = ['GET', 'POST'])
-def home():
-    if request.method == "POST":
-        data = request.form.copy()
-
-        for i in data.keys():
-            data[i] = int(data[i])
-        
-
-        n_rounds = data['n_rounds']
-        n_plr = data['n_plr']
-        plr_added_r = data['plr_added_r']
-        plr_added_s = data['plr_added_s']
-        num_spins = data['num_spins']
-        rt = data['rt']
-        chance = data['chance']
-        stake = data['stake']
-        freebie = data['freebie']
-       
-        w, f = run_rounds_api( n_rounds,n_plr,plr_added_r,    plr_added_s,    num_spins,rt,    chance,    stake,    freebie)
-        cssadd=" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css' rel='stylesheet' >"
-        return str(
-           cssadd+ "<div class='px-2'><h1 class='text-primary mt-2'>These are the final chip stakes</h1> <p class='text-dark px-3'>" 
-             + str(f) + "</p></div>"
-             
-        )   
-    else:
-        return render_template("index.html")
-    return render_template('index.html')
+from flask import Flask, request
+import json
+import pandas as pd  
+from KPIs import get_basic_kpis
+from clustering import *
+from flask_cors import CORS
+import numpy as np
+from clustering import cluster
+from KPIs import key
+from clustering import trim
+from clustering import get_cluster_val
+from clustering import prepare
 
 
-if __name__ == '__main__':
-    app.run(debug = True)
+
+
+app = Flask(__name__)
+CORS(app)
+@app.route('/')
+def hello():
+    return "<h1>FlatFolder KPI</h1>"
+
+
+@app.route('/api/getkpi', methods = ['GET', 'POST'])
+
+def func():
+    
+    
+    content = request.get_json(silent = True)
+    d = content['data']
+    amounts = pd.DataFrame(d[1][0]['transactions'])['transactionAmount'].apply(lambda x: x['amount'])
+
+    date = pd.DataFrame(d[1][0]['transactions'])['bookingDate']
+    df = pd.DataFrame()
+    df['date'] = date
+    df['amount'] = amounts
+    df.amount = df.amount.apply(lambda x: float(x))
+    df.date = pd.to_datetime(df.date)
+    df.amount*=-1
+    sd = df.copy()
+    sd = sd[sd.amount>300]
+    if(sd.shape[0] < 5 ):
+        return "Could not find rent"
+    labels = cluster(sd.amount,1, sd.amount.median()*0.1, 3 , plot = False)
+    sd['labels'] = labels
+    sd = sd[sd.labels!=-1]
+    labels = sd.labels.unique()
+    clusters = []
+    for i in labels:
+        clusters.append(sd[sd.labels == i])
+#     cluster_val = get_cluster_val(clusters)
+    ans = get_cluster_val(clusters)
+    ans.sort(key = key,reverse= True)
+    return str({'duration': ans[0][1]['duration_testdf'], 'amount': ans[0][0]['med_testdf']})
+  
+if __name__ == "__main__":
+    app.run()
