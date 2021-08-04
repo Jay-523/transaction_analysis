@@ -30,8 +30,22 @@ def cluster(x, y, eps, s, plot=  False):
         plt.show()
     return a.labels.values
 def filter(x):
-    return x[x['amount'] > 100]
-
+    return x[x['amount'] > 300]
+def trim(test_df):
+    s = test_df.amount.median()*0.1
+    m = test_df.amount.median()
+    test_df['isout'] = test_df.amount.apply(lambda x: np.abs(x-m)>s)
+    return test_df[~test_df.isout]
+def get_cluster_val(clusters):
+    inf = []
+    for i in clusters:
+        trimmed = trim(i)
+        med_testdf = trimmed.amount.median()
+        duration_testdf = trimmed.date.min(), trimmed.date.max()
+        freq = trimmed.shape[0]
+        day_std = trimmed.date.apply(lambda x: x.day).std()
+        inf.append([{'med_testdf': med_testdf}, {'duration_testdf': duration_testdf}, {'freq': freq}, {'day_std': day_std}])
+    return inf
 def print_cluster_info(data):
     """Returns list of cluster seperated dataframes, takes in data, with column label"""
     for i in data.label.unique():
@@ -59,10 +73,10 @@ def get_expenses_dataframe(df, convert_date = True, plot = False):
 
     e['amount'] = e.amount.apply(np.abs)
     e['day'] = e.date.apply(lambda x: x.day)
-    e['label'] = cluster(e.day, e.amount, 16, 4, plot = False)
-    e['label'] = cluster(e.day, e.amount, 16, 4, plot = False)
+    e['label'] = cluster(e.amount, 1, e.amount.median()*0.1, 4, plot = False)
+
     if(plot == True):
-        e['label'] = cluster(e.day, e.amount, 5, 4)
+        e['label'] = cluster(e.amount, 1, 5, 4)
     ez = []
     for i in e.label.unique():
         
@@ -106,7 +120,7 @@ def get_expenses_dataframe(df, convert_date = True, plot = False):
 
 
 def verify_expense(expenses, frequencies, df, tm, convert_date = True):
-    """amount refers to the amount of expence, frequency is the number of months she needs to pay in an year
+    """amount refers to the amount of expense, frequency is the number of months she needs to pay in an year
         and m is the expense analytics dataframe obtained from the about function"""
     verification_status = []
     m = get_expenses_dataframe(df, convert_date = convert_date)
