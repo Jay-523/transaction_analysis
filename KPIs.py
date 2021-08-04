@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import time 
 import datetime
 
@@ -17,7 +16,8 @@ def getgrad(x, y):
 #input can be changed as per liking
 
 
-
+def key(k):
+    return k[2]['freq']/(1+(0.05*k[3]['day_std']))
 
 def prepare(df, convert_date = True):
     try:
@@ -197,10 +197,3 @@ def print_cluster_info(data):
        
         clusters.append(data[data.label == i])
     return clusters
-
-
-
-
-        
-        
-
